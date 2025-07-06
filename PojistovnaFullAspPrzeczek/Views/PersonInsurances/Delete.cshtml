@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model PojistovnaFullAspPrzeczek.DTOs.PersonInsurances.PersonInsuranceDto
+
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Html.Raw(Localizer["PersonInsurancesDelete_Title"].Value);
+}
+
+<h1>
+    @Html.Raw(Localizer["PersonInsurancesDelete_Title"].Value)
+</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.InsurancePrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.InsurancePrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SubjectOfInsurance)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SubjectOfInsurance)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IdPersonInsurance" />
+        <input type="hidden" asp-for="IdInsuredPerson" />
+        <a asp-controller="InsuredPersons" asp-route-Id="@Model.IdInsuredPerson" asp-action="Details" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            @Html.Raw(Localizer["PersonInsurancesDelete_Back"].Value)
+        </a>
+        <input type="submit"
+               value=@Html.Raw(Localizer["PersonInsurancesDelete_Save"].Value)
+               class="btn btn-danger" />
+    </form>
+</div>
+
+@*debug
+*@
+<p>Zdroj: @Model.ToString()</p>

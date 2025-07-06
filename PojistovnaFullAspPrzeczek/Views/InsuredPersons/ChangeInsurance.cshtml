@@ -1,0 +1,36 @@
+﻿@model PojistovnaFullAspPrzeczek.DTOs.InsuredPersons.InsuredPersonChangeInsuranceDto
+
+@{
+    ViewData["Title"] = "Změna pojištění";
+}
+
+<h1>Změna pojištění</h1>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}
+
+
+<h4>@Model.FullName</h4>
+<hr />
+
+<form asp-action="ChangeInsurance" method="post">
+    <input type="hidden" name="id" value="@Model.IdInsuredPerson" />
+
+    <div class="form-group">
+        <label for="selectedInsuranceId">Vyber nové pojištění</label>
+        <select class="form-control" name="selectedInsuranceId" asp-items="Model.PersonInsurances" required>
+            <option value="">-- Vyber pojištění --</option>
+        </select>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-success">Uložit změnu</button>
+    <a asp-action="Details" asp-route-id="@Model.IdInsuredPerson" class="btn btn-secondary">Zpět</a>
+</form>

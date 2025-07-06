@@ -1,0 +1,85 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using PojistovnaFullAspPrzeczek.Resources
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IViewLocalizer Localizer
+
+@{
+    var isAuthenticated = SignInManager.IsSignedIn(User);
+    var isAdmin = User.IsInRole("Admin");
+}
+
+@model IEnumerable<PojistovnaFullAspPrzeczek.DTOs.Insurances.InsuranceDto>
+
+@{
+    ViewData["Title"] = "Přehled pojištění";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>
+            <i class="bi bi-shield-fill-check me-2"></i>
+            @Html.Raw(Localizer["InsuranceIndex_Title"].Value)
+        </h2>
+        @if (isAdmin)
+        {
+            <a asp-action="Create" class="btn btn-success">
+                <i class="bi bi-plus-circle-fill me-1"></i>
+                @Html.Raw(Localizer["InsuranceIndex_CreateNew"].Value)
+            </a>
+        }
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.First().Title)</th>
+                    <th class="text-center">
+                        @Html.Raw(Localizer["InsuranceIndex_Action"].Value)                        
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                        <td class="text-center">
+                            <a 
+                               asp-action="Details" 
+                               asp-route-id="@item.IdInsurance" 
+                               class="btn btn-outline-secondary" 
+                               title="Detail"
+                               >
+                                <i class="bi bi-info-circle-fill"></i>
+                            </a>
+                            @if (isAdmin)
+                            {
+                                <a 
+                                   asp-action="Edit" 
+                                   asp-route-id="@item.IdInsurance" 
+                                   class="btn btn-outline-primary" 
+                                   title=@Html.Raw(Localizer["InsuranceIndex_Edit"].Value)                        
+
+                                   >
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                                <a 
+                                   asp-action="Delete" 
+                                   asp-route-id="@item.IdInsurance" 
+                                   class="btn btn-outline-danger" 
+                                   title=@Html.Raw(Localizer["InsuranceIndex_Delete"].Value)                        
+                                   >
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

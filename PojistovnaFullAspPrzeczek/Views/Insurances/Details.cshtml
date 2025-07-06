@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using PojistovnaFullAspPrzeczek.Resources
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IViewLocalizer Localizer
+
+@{
+    var isAuthenticated = SignInManager.IsSignedIn(User);
+    var isAdmin = User.IsInRole("Admin");
+}
+@model PojistovnaFullAspPrzeczek.DTOs.Insurances.InsuranceDto
+
+@{
+    ViewData["Title"] = "Detail pojištění";
+}
+
+@*debug start*@
+@*<p>Zdroj dat: @Model.ToString()</p>
+*@@*debug end*@
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <h5 class="mb-0">                
+                @Html.Raw(Localizer["InsuranceDetails_Title"].Value)
+            </h5>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">                    
+                    @Html.Raw(Localizer["InsuranceDetails_Insurance"].Value)
+                </dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Title)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i>           
+            @Html.Raw(Localizer["InsuranceDetails_Back"].Value)
+        </a>
+        @if (isAdmin)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.IdInsurance" class="btn btn-primary">
+                <i class="bi bi-pencil-fill"></i>
+                @Html.Raw(Localizer["InsuranceDetails_Edit"].Value)
+            </a>
+        }
+    </div>
+</div>

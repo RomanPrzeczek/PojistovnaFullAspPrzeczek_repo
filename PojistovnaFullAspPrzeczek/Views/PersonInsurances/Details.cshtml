@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model PojistovnaFullAspPrzeczek.DTOs.PersonInsurances.PersonInsuranceDto
+
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Html.Raw(Localizer["PersonInsurancesDetails_Title"].Value);
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <h5 class="mb-0">
+                @Html.Raw(Localizer["PersonInsurancesDetails_Title"].Value)
+            </h5>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.InsurancePrice)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.InsurancePrice)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.SubjectOfInsurance)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.SubjectOfInsurance)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a asp-controller="InsuredPersons" asp-route-id="@Model.IdInsuredPerson" asp-action="Details" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            @Html.Raw(Localizer["PersonInsurancesDetails_Back"].Value)
+        </a>
+        <a asp-action="Edit" asp-route-id="@Model?.IdPersonInsurance" class="btn btn-primary">
+            <i class="bi bi-pencil-fill"></i>
+            @Html.Raw(Localizer["PersonInsurancesDetails_Edit"].Value)
+        </a>
+    </div>
+</div>
+
+@*debug
+*@
+<p>Zdroj: @Model.ToString()</p>

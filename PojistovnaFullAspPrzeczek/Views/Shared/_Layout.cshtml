@@ -1,0 +1,186 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@inject IViewLocalizer Localizer
+
+@{
+    var isAuthenticated = SignInManager.IsSignedIn(User);
+    var isAdmin = User.IsInRole("Admin");
+    var isInsured = User.IsInRole("InsuredUser");
+}
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PojistovnaFullAspPrzeczek</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PojistovnaFullAspPrzeczek.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PojistovnaFullAspPrzeczek</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @{
+                            var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+                            var action = ViewContext.RouteData.Values["action"]?.ToString();
+
+                            bool isHomeActive =
+                                (isAdmin && controller == "InsuredPersons" && action == "Index") ||
+                                (isInsured && controller == "InsuredPersons" && action == "Details") ||
+                                (!isAuthenticated && controller == "Home" && action == "Index");
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link @(isHomeActive ? "active text-primary fw-semibold" : "text-dark")"
+                               asp-controller="Home" asp-action="Index">
+                                @(isAdmin ? @Html.Raw(Localizer["Layout_InsuredOverview"].Value) : isInsured ? @Html.Raw(Localizer["Layout_MyOverview"].Value) : @Html.Raw(Localizer["Layout_Home"].Value))
+                            </a>
+                        </li>
+                        @* Pojištění je veřejně viditelné *@
+                        @{
+                            var isInsuranceActive = ViewContext.RouteData.Values["controller"]?.ToString() == "Insurances";
+                        }
+
+                        <li class="nav-item">
+                            <a class="nav-link @(isInsuranceActive ? "active text-primary fw-semibold" : "text-dark")"
+                               asp-controller="Insurances" asp-action="Index"> @Html.Raw(Localizer["Layout_Insurance"].Value)</a>
+                        </li>
+                        @{
+                            var isAboutActive = ViewContext.RouteData.Values["controller"]?.ToString() == "Home"
+                                             && ViewContext.RouteData.Values["action"]?.ToString() == "AboutApp";
+                        }
+
+                        <li class="nav-item">
+                            <a class="nav-link @(isAboutActive ? "active text-primary fw-semibold" : "text-dark")"
+                               asp-controller="Home" asp-action="AboutApp">@Html.Raw(Localizer["Layout_About"].Value)</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 gap-sm-3 mt-3 mt-sm-0">
+                        @if (isAuthenticated)
+                        {
+                            <form asp-controller="Home" asp-action="Logout" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-box-arrow-right me-1"></i>@Html.Raw(Localizer["Layout_Logout"].Value) 
+                                </button>
+                            </form>
+
+                            var user = await UserManager.GetUserAsync(User);
+                            <span class="text-muted d-inline-flex align-items-center">
+                                <i class="bi bi-person-circle me-1"></i> @user.Email
+                            </span>
+                        }
+
+                        @{
+                            var currentPath = Context.Request.Path.Value?.ToLowerInvariant() ?? "/";
+                            string safeReturnUrl;
+
+                            // Přepínač pro případ změny jazyka po NOK login validaci, pokud aktuální path je POST-only (např. Account/Login), vrátíme uživatele domů
+                            if (currentPath == "/account/login" || Context.Request.Method == "POST")
+                            {
+                                safeReturnUrl = Url.Action("Index", "Home");
+                            }
+                            else
+                            {
+                                safeReturnUrl = currentPath;
+                            }
+                        }
+                        <form asp-controller="Home" asp-action="ChangeLanguage" method="post" class="d-inline">
+                            <select name="culture" onchange="this.form.submit()" class="form-select form-select-sm w-auto d-inline">
+                                <option value="cs" selected="@((CultureInfo.CurrentUICulture.Name == "cs") ? "selected" : null)">@Html.Raw(Localizer["Layout_Lang_Cz"].Value)</option>
+                                <option value="en" selected="@((CultureInfo.CurrentUICulture.Name == "en") ? "selected" : null)">@Html.Raw(Localizer["Layout_Lang_En"].Value)</option>
+                            </select>
+                            <input type="hidden" name="returnUrl" value="@safeReturnUrl" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @*            Kontrolní výpis kontroleru, akce a role.
+            *@
+            @*            <pre>@($"Controller: {controller}, Action: {action}, Role: {(isAdmin ? "admin" : isInsured ? "insured" : "guest")}")</pre>
+            *@
+            @RenderBody()
+        </main>
+    </div>
+
+    @{
+        bool enableToasts = true; // Aktivuj = true, deaktivuj = false
+    }
+
+    @if (enableToasts)
+    {
+        <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1080">
+            <div class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true"
+                 id="statusToast">
+                <div class="d-flex">
+                    <div class="toast-body" id="statusToastBody"></div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+    }
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - PojistovnaFullAspPrzeczek - <a asp-area="" asp-controller="Home" asp-action="AboutApp">@Html.Raw(Localizer["Layout_About"].Value)</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @{
+        if (enableToasts)
+        {
+            <script>
+                window.addEventListener('DOMContentLoaded', () => {
+                    const toastMessage = @Html.Raw(Json.Serialize(TempData["ToastMessage"])); // verze pro zohlednění encoding
+                    const toastType = '@TempData["ToastType"]' || 'success'; // defaultně zelený
+
+                    if (toastMessage) {
+                        const toastEl = document.getElementById('statusToast');
+                        const toastBody = document.getElementById('statusToastBody');
+
+                        // Reset barvy + nastav novou
+                        toastEl.className = 'toast align-items-center text-white border-0 bg-' + toastType;
+
+                        toastBody.textContent = toastMessage;
+
+                        const toast = new bootstrap.Toast(toastEl);
+                        toast.show();
+                    }
+                });
+            </script>
+        }
+    }
+    <script>
+        setTimeout(() => {
+            const alert = document.querySelector('.alert');
+            if (alert) {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            }
+        }, 4000); // zmizí po 4 vteřinách
+    </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

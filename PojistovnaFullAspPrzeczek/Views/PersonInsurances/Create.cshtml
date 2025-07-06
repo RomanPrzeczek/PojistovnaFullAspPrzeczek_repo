@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model PojistovnaFullAspPrzeczek.DTOs.PersonInsurances.PersonInsuranceCreateDto
+
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Html.Raw(Localizer["PersonInsurancesCreate_Title"].Value);
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create">
+    <input type="hidden" asp-for="IdInsuredPerson" />
+
+    <div class="form-group">
+        <label asp-for="IdInsuranceForPerson" class="control-label"></label>
+        <select asp-for="IdInsuranceForPerson" class="form-control" asp-items="ViewBag.InsuranceList"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="InsurancePrice" class="control-label"></label>
+        <input asp-for="InsurancePrice" class="form-control" />
+        <span asp-validation-for="InsurancePrice" class="text-danger"></span>
+    </div>
+
+    <div class="form-group w-auto p3">
+        <label asp-for="SubjectOfInsurance" class="control-label"></label>
+        <input asp-for="SubjectOfInsurance" class="form-control" />
+        <span asp-validation-for="SubjectOfInsurance" class="text-danger"></span>
+    </div>
+
+    <div class="form-group w-25 p3">
+        <label asp-for="StartDate" class="control-label"></label>
+        <input asp-for="StartDate" class="form-control" type="date" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group w-25 p3">
+        <label asp-for="EndDate" class="control-label"></label>
+        <input asp-for="EndDate" class="form-control" type="date" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+    <div class="mt-4 d-flex justify-content-between">
+        <a asp-controller="InsuredPersons" asp-action="Details" asp-route-id="@Model.IdInsuredPerson" class="btn btn-secondary">
+            @Html.Raw(Localizer["PersonInsurancesCreate_Back"].Value)
+        </a>
+        <button type="submit" class="btn btn-primary">
+            @Html.Raw(Localizer["PersonInsurancesCreate_Save"].Value)
+        </button>
+    </div>
+</form>
+
+@*debug
+*@
+<p>Zdroj: @Model.ToString()</p>

@@ -1,0 +1,126 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model PojistovnaFullAspPrzeczek.DTOs.InsuredPersons.InsuredPersonDetailDto
+
+@{
+    ViewData["Title"] = "Detail pojištěnce";
+}
+
+@inject IViewLocalizer Localizer
+
+@{
+    var isAdmin = User.IsInRole("Admin");
+}
+
+<div class="container mt-5">
+    <!-- Osobní údaje -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <i class="bi bi-person-vcard-fill me-2"></i>
+            <h5 class="mb-0">@Html.Raw(Localizer["InsuredPersonDetails_Title"].Value)</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt display-for="FullName" class="col-sm-3"></dt>
+                <dd class="col-sm-9">@Model.FullName</dd>
+
+                <dt display-for="City" class="col-sm-3"></dt>
+                <dd class="col-sm-9">@Model.City</dd>
+
+                <dt class="col-sm-3">E-mail</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt display-for="Phone" class="col-sm-3"></dt>
+                <dd class="col-sm-9">@Model.Phone</dd>
+                @*
+                    debug
+                    <dt class="col-sm-3">Zdroj dat:</dt>
+                    <dd class="col-sm-9">@Model.ToString()</dd>
+                *@
+            </dl>
+        </div>
+    </div>
+
+    <!-- Tlačítka akce -->
+    <div class="d-flex justify-content-between mb-4">
+        @if (isAdmin)
+        {
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> @Html.Raw(Localizer["InsuredPersonDetails_Back"].Value)
+            </a>
+        }
+    <a asp-action="Edit" asp-route-id="@Model.IdInsuredPerson" class="btn btn-primary">
+        <i class="bi bi-pencil-fill"></i> @Html.Raw(Localizer["InsuredPersonDetails_EditPerson"].Value)
+    </a>
+    </div>
+
+    <!-- Pojištění pojištěnce -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white d-flex align-items-center">
+            <i class="bi bi-file-earmark-medical-fill me-2"></i>
+            <h5 class="mb-0" asp-controler="PersonInsurances" asp-route-insurance="">@Html.Raw(Localizer["InsuredPersonDetails_Insurances"].Value)</h5>
+
+@*            debug
+    <h6 class="mb-0">@Model.ToString()</h6>
+*@
+        </div>
+        <div class="card-body">
+            @if (Model.PersonInsurances != null && Model.PersonInsurances.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>@Html.Raw(Localizer["InsuredPersonDetails_InsuranceTitle"].Value)</th>
+                                <th>@Html.Raw(Localizer["InsuredPersonDetails_InsuranceSubject"].Value)</th>
+                                <th>@Html.Raw(Localizer["InsuredPersonDetails_InsurancePrice"].Value)</th>
+                                <th>@Html.Raw(Localizer["InsuredPersonDetails_InsuranceValidFrom"].Value)</th>
+                                <th>@Html.Raw(Localizer["InsuredPersonDetails_InsuranceValidTo"].Value)</th>
+                                <th class="text-center">@Html.Raw(Localizer["InsuredPersonDetails_InsuranceAction"].Value)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var insurance in Model.PersonInsurances)
+                            {
+                                <tr>
+                                    <td>@insurance.Insurance?.Title</td>
+                                    <td>@insurance.SubjectOfInsurance</td>
+                                    <td>@insurance.InsurancePrice</td>
+                                    <td>@insurance.StartDate.ToShortDateString()</td>
+                                    <td>@insurance.EndDate.ToShortDateString()</td>
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a asp-controller="PersonInsurances" asp-action="Details" asp-route-id="@insurance.IdPersonInsurance" class="btn btn-outline-secondary" title="Detail">
+                                                <i class="bi bi-info-circle-fill"></i>
+                                            </a>
+                                            <a asp-controller="PersonInsurances" asp-action="Edit" asp-route-id="@insurance.IdPersonInsurance" class="btn btn-outline-primary" title=@Html.Raw(Localizer["InsuredPersonDetails_EditInsurance"].Value)>
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+                                            <a asp-controller="PersonInsurances" asp-action="Delete" asp-route-id="@insurance.IdPersonInsurance" class="btn btn-outline-danger" title=@Html.Raw(Localizer["InsuredPersonDetails_DeleteInsurance"].Value)>
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+        <p class="text-muted">@Html.Raw(Localizer["InsuredPersonDetails_NoInsurances"].Value)</p>
+            }
+
+            <div class="d-grid mt-3">
+                <a asp-controller="PersonInsurances" asp-action="Create" asp-route-idInsuredPerson="@Model.IdInsuredPerson" class="btn btn-success">
+                    <i class="bi bi-plus-circle-fill"></i> @Html.Raw(Localizer["InsuredPersonDetails_AddInsurance"].Value)
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

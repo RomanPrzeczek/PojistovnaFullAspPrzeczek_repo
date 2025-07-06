@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+
+@model PojistovnaFullAspPrzeczek.DTOs.Insurances.InsuranceDto
+
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Html.Raw(Localizer["InsuranceEdit_Title"].Value);
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <h5 class="mb-0">                
+                @Html.Raw(Localizer["InsuranceEdit_Title"].Value)
+            </h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="IdInsurance" />
+                <div class="form-group">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                        @Html.Raw(Localizer["InsuranceEdit_Back"].Value)
+                    </a>
+                    <input 
+                           type="submit" 
+                           value=@Html.Raw(Localizer["InsuranceEdit_Save"].Value)
+                           class="btn btn-primary" 
+                    />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

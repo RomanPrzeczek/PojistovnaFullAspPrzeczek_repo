@@ -1,0 +1,79 @@
+﻿@using PojistovnaFullAspPrzeczek.ViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Přihlášení";
+}
+
+@inject IViewLocalizer Localizer
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="max-width: 420px; width: 100%;">
+        <div class="card-body">
+            <h2 class="text-center mb-4">
+                <i class="bi bi-shield-lock-fill me-2"></i>Pojišťovna
+            </h2>
+
+            @*            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger alert-dismissible fade show", role = "alert" })
+            *@            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @Html.ValidationSummary(false, "", new { @class = "mb-0" })
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label=@Html.Raw(Localizer["HomeIndex_Close"].Value)></button>
+                </div>
+            }
+
+
+            <form asp-action="Login" asp-controller="Account" method="post">
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                        <input asp-for="Email" class="form-control" />
+                    </div>
+                    <small class="form-text text-muted">@Html.Raw(Localizer["HomeIndex_EmailCondition"].Value)</small>
+                    <span asp-validation-for="Email" class="text-danger" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">@Html.Raw(Localizer["HomeIndex_Password"].Value)</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                        <input asp-for="Password" type="password" class="form-control" />
+                    </div>
+                    <small class="form-text text-muted">@Html.Raw(Localizer["HomeIndex_PasswordCondition"].Value)</small>
+                    <span asp-validation-for="Password" class="text-danger" />
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label">@Html.Raw(Localizer["HomeIndex_RememberMe"].Value)</label>
+                </div>
+
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>@Html.Raw(Localizer["HomeIndex_LogIn"].Value)
+                    </button>
+                </div>
+
+                <p class="text-center">
+                    @Html.Raw(Localizer["HomeIndex_NoAccount"].Value)
+                    <a asp-action="Register" asp-controller="Account" class="btn btn-outline-secondary mt-1">
+                        @Html.Raw(Localizer["HomeIndex_Register"].Value)
+                    </a>
+                </p>
+            </form>
+
+            <hr />
+
+            <div class="text-center">
+                <h6>@Html.Raw(Localizer["HomeIndex_ForPublic"].Value)</h6>
+                <a asp-controller="Insurances" asp-action="Index" class="btn btn-outline-secondary mt-2">
+                    <i class="bi bi-card-checklist me-1"></i>@Html.Raw(Localizer["HomeIndex_ShowInsurances"].Value)
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

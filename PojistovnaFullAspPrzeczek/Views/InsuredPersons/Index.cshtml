@@ -1,0 +1,73 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model IEnumerable<PojistovnaFullAspPrzeczek.DTOs.InsuredPersons.InsuredPersonDto>
+
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Přehled pojištěnců";
+}
+
+<div class="container mt-5">
+    <h2>
+        <i class="bi bi-shield-fill-check me-2"></i>
+        @Html.Raw(Localizer["InsuredPersonIndex_ViewTitle"].Value)
+    </h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
+                <tr class="text-center">
+                    <th>
+                        @Html.Raw(Localizer["InsuredPersonIndex_FullName"].Value)
+                    </th>
+                    <th>
+                        @Html.Raw(Localizer["InsuredPersonIndex_City"].Value)
+                    </th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-center">
+                        <td>
+                            @item.FullName
+                        </td>
+                        <td>
+                            @item.City
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            <a 
+                               asp-action="Details" 
+                               asp-route-id="@item.IdInsuredPerson" 
+                               class="btn btn-outline-secondary" 
+                               title=@Html.Raw(Localizer["InsuredPersonIndex_Details"].Value)
+                            >
+                                <i class="bi bi-info-circle-fill"></i>
+                            </a>
+                            <a 
+                               asp-action="Edit" 
+                               asp-route-id="@item.IdInsuredPerson" 
+                               class="btn btn-outline-primary" 
+                               title=@Html.Raw(Localizer["InsuredPersonIndex_Edit"].Value)
+                            >
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <a 
+                               asp-action="Delete" 
+                               asp-route-id="@item.IdInsuredPerson" 
+                               class="btn btn-outline-danger"
+                               title=@Html.Raw(Localizer["InsuredPersonIndex_Delete"].Value)
+                            >
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model PojistovnaFullAspPrzeczek.DTOs.PersonInsurances.PersonInsuranceDto
+
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Html.Raw(Localizer["PersonInsurancesEdit_Title"].Value);
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <h5 class="mb-0">
+                @Html.Raw(Localizer["PersonInsurancesEdit_Title"].Value)
+            </h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="IdPersonInsurance" />
+                <div class="form-group">
+                    <label asp-for="InsurancePrice" class="control-label"></label>
+                    <input asp-for="InsurancePrice" class="form-control" />
+                    <span asp-validation-for="InsurancePrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SubjectOfInsurance" class="control-label"></label>
+                    <input asp-for="SubjectOfInsurance" class="form-control" />
+                    <span asp-validation-for="SubjectOfInsurance" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdInsuranceForPerson" class="control-label">Pojištění</label>
+                    <select asp-for="IdInsuranceForPerson" class="form-control" asp-items="ViewBag.InsuranceList">
+                        <option value="">-- Vyber pojištění --</option>
+                    </select>
+                    <span asp-validation-for="IdInsuranceForPerson" class="text-danger"></span>
+                </div>
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-controller="InsuredPersons" asp-route-id="@Model.IdInsuredPerson" asp-action="Details" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                        @Html.Raw(Localizer["PersonInsurancesEdit_Back"].Value)
+                    </a>
+                    <input type="submit"
+                           value=@Html.Raw(Localizer["PersonInsurancesEdit_Save"].Value)
+                           class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*debug
+*@
+<p>Zdroj: @Model.ToString()</p>
