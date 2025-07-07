@@ -25,5 +25,8 @@ jobs:
     - name: Build
       run: dotnet build ./PojistovnaFullAspPrzeczek/PojistovnaFullAspPrzeczek.sln --no-restore
 
-    - name: Run tests
+    - name: Run unit tests
       run: dotnet test ./PojistovnaFullAspPrzeczek.Tests.Unit.xUnit/PojistovnaFullAspPrzeczek.Tests.Unit.xUnit.csproj --no-build --verbosity normal
+
+    - name: Run integration tests
+      run: dotnet test ./PojistovnaFullAspPrzeczek.Tests.Integration.xUnit/PojistovnaFullAspPrzeczek.Tests.Integration.xUnit.csproj --no-build --verbosity normal
