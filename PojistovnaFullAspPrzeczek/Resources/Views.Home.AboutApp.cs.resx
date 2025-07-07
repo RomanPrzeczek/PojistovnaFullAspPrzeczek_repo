@@ -133,11 +133,35 @@
     <value>Možnost doplnit a upravovat pojištění</value>
   </data>
   <data name="AboutApp_MobileFirst" xml:space="preserve">
-    <value> Responzivní design pro mobil i desktop</value>
+    <value>Responzivní design pro mobil i desktop</value>
   </data>
   <data name="AboutApp_Author" xml:space="preserve">
     <value> 
       Tuto aplikaci vytvořil Roman Przeczek jako součást studia a tréninku ASP.NET MVC a C#.
     </value>
+  </data>
+  <data name="AboutApp_LinksTitle" xml:space="preserve">
+    <value>Dokumentace aplikace</value>
+  </data>
+  <data name="AboutApp_GitHub" xml:space="preserve">
+    <value>GitHub repozitář</value>
+  </data>
+  <data name="AboutApp_Readme" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
+  <data name="AboutApp_TestReadme" xml:space="preserve">
+    <value>Tutorial testů</value>
+  </data>
+  <data name="AboutApp_Diagrams" xml:space="preserve">
+    <value>Diagramy</value>
+  </data>
+  <data name="AboutApp_DiagramUseCase" xml:space="preserve">
+    <value>Případové studie</value>
+  </data>
+  <data name="AboutApp_DiagramERD" xml:space="preserve">
+    <value>Data model</value>
+  </data>
+  <data name="AboutApp_DiagramAppStructure" xml:space="preserve">
+    <value>Struktůra aplikace</value>
   </data>
 </root>

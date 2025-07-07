@@ -140,4 +140,28 @@
       This app was created by Roman Przeczek as a part of education and training of ASP.NET MVC a C#.
     </value>
   </data>
+  <data name="AboutApp_LinksTitle" xml:space="preserve">
+    <value>App documentation</value>
+  </data>
+  <data name="AboutApp_GitHub" xml:space="preserve">
+    <value>GitHub repository</value>
+  </data>
+  <data name="AboutApp_Readme" xml:space="preserve">
+    <value>ReadMe</value>
+  </data>
+  <data name="AboutApp_TestReadme" xml:space="preserve">
+    <value>Test ReadMe</value>
+  </data>
+  <data name="AboutApp_Diagrams" xml:space="preserve">
+    <value>Diagrams</value>
+  </data>
+  <data name="AboutApp_DiagramUseCase" xml:space="preserve">
+    <value>Use case</value>
+  </data>
+  <data name="AboutApp_DiagramERD" xml:space="preserve">
+    <value>Data model</value>
+  </data>
+  <data name="AboutApp_DiagramAppStructure" xml:space="preserve">
+    <value>App structure</value>
+  </data>
 </root>
