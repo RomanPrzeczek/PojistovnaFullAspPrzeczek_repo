@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+ï»¿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +7,7 @@ using PojistovnaFullAspPrzeczek.Interfaces;
 using PojistovnaFullAspPrzeczek.Repositories;
 using PojistovnaFullAspPrzeczek.Services;
 using PojistovnaFullAspPrzeczek.MappingProfiles;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,7 +76,7 @@ var app = builder.Build();
 
 var supportedCultures = new[] { "cs", "en" };
 
-// lokalizace musí být použita pøed routingem
+// lokalizace musÃ­ bÃ½t pouÅ¾ita pÅ™ed routingem
 var localizationOptions = new RequestLocalizationOptions() { ApplyCurrentCultureToResponseHeaders = true }
     .SetDefaultCulture(supportedCultures[0])
     .AddSupportedCultures(supportedCultures)
@@ -83,7 +84,7 @@ var localizationOptions = new RequestLocalizationOptions() { ApplyCurrentCulture
 
 app.UseRequestLocalization(localizationOptions);
 
-// Pouze v Development prostøedí vymaže data, kromnì test-admina a -pojištìnce
+// Pouze v Development prostÅ™edÃ­ vymaÅ¾e data, kromnÄ› test-admina a -pojiÅ¡tÄ›nce
 /*if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
@@ -119,7 +120,14 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-// vytvoøení rolí
+// testing middleware environment
+if (app.Environment.IsEnvironment("Testing"))
+{
+    app.UseAuthentication();
+    app.UseAuthorization();
+}
+
+// roles creation
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -135,3 +143,5 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+public partial class Program { } // for integration test WebApplicationFactory

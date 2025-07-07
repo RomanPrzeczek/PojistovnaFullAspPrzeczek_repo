@@ -5,7 +5,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-PojistovnaFullAspPrzeczek-39a820d4-ff10-43a0-b54c-fddcebcfe9b0</UserSecretsId>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <CopyOutputSymbolsToPublishDirectory>true</CopyOutputSymbolsToPublishDirectory>
+    <CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
   </PropertyGroup>
 
   <ItemGroup>
