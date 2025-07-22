@@ -121,7 +121,7 @@
     <value>About app</value>
   </data>
   <data name="Layout_Home" xml:space="preserve">
-    <value>Home</value>
+    <value>Login / Register</value>
   </data>
   <data name="Layout_Insurance" xml:space="preserve">
     <value>Insurances</value>

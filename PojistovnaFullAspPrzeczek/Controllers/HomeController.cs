@@ -2,25 +2,20 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PojistovnaFullAspPrzeczek.Data;
 using PojistovnaFullAspPrzeczek.Models;
+using PojistovnaFullAspPrzeczek.Interfaces;
 
 namespace PojistovnaFullAspPrzeczek.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly ApplicationDbContext _context;
-
-    public HomeController(ILogger<HomeController> logger, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, ApplicationDbContext context)
+    private readonly IInsuredPersonService _insuredPersonService; public HomeController(IInsuredPersonService insuredPersonService, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
     {
-        _logger = logger;
         _signInManager = signInManager;
         _userManager = userManager;
-        _context = context;
+        _insuredPersonService = insuredPersonService;
     }
 
     public async Task<IActionResult> Index()
@@ -36,8 +31,10 @@ public class HomeController : Controller
                     return RedirectToAction("Index", "InsuredPersons"); // přehled všech
                 }
 
-                var insuredPerson = await _context.InsuredPerson
-                    .FirstOrDefaultAsync(p => p.Email == user.Email);
+                var insuredPerson = await _insuredPersonService.GetByEmailAsync(user.Email);
+
+                //await _context.InsuredPerson
+                //.FirstOrDefaultAsync(p => p.Email == user.Email);
 
                 if (insuredPerson != null)
                 {

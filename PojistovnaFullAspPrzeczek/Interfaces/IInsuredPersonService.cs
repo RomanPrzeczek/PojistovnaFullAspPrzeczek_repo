@@ -15,5 +15,6 @@ namespace PojistovnaFullAspPrzeczek.Interfaces
 
         Task<InsuredPersonDeleteDto?> GetDeleteByIdAsync(int id);
         Task DeleteAsync(int id);
+        Task<InsuredPersonDto?> GetByEmailAsync(string email);
     }
 }

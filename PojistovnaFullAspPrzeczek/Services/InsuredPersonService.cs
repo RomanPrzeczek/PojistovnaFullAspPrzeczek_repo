@@ -131,5 +131,13 @@ namespace PojistovnaFullAspPrzeczek.Services
             _mapper.Map(dto, entity); // přemapuje změny do entity
             await _context.SaveChangesAsync();
         }
+
+        public async Task<InsuredPersonDto?> GetByEmailAsync(string email)
+        {
+            var person = await _context.InsuredPerson
+                .FirstOrDefaultAsync(p => p.Email == email);
+
+            return person is null ? null : _mapper.Map<InsuredPersonDto>(person);
+        }
     }
 }

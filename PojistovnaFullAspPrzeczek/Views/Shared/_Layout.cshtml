@@ -10,7 +10,7 @@
 @{
     var isAuthenticated = SignInManager.IsSignedIn(User);
     var isAdmin = User.IsInRole("Admin");
-    var isInsured = User.IsInRole("InsuredUser");
+    var isInsured = User.IsInRole("InsuredPerson");
 }
 
 <!DOCTYPE html>
