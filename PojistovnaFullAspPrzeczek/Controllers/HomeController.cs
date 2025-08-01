@@ -28,13 +28,10 @@ public class HomeController : Controller
             {
                 if (await _userManager.IsInRoleAsync(user, "Admin"))
                 {
-                    return RedirectToAction("Index", "InsuredPersons"); // přehled všech
+                    return RedirectToAction("Index", "InsuredPersons");
                 }
 
                 var insuredPerson = await _insuredPersonService.GetByEmailAsync(user.Email);
-
-                //await _context.InsuredPerson
-                //.FirstOrDefaultAsync(p => p.Email == user.Email);
 
                 if (insuredPerson != null)
                 {
@@ -43,7 +40,6 @@ public class HomeController : Controller
             }
         }
 
-        // Nepřihlášený nebo bez vazby → zobraz login nebo welcome
         return View();
     }
 

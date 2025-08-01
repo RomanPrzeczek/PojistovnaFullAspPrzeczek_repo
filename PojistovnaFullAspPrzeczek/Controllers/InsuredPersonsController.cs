@@ -7,8 +7,8 @@ namespace PojistovnaFullAspPrzeczek.Controllers
 {
     public class InsuredPersonsController : Controller
     {
-        private readonly IInsuredPersonService _insuredPersonService; // service pro pojištěnce
-        private readonly IPersonInsuranceService _personInsuranceService; // service pro pojištění osob
+        private readonly IInsuredPersonService _insuredPersonService; 
+        private readonly IPersonInsuranceService _personInsuranceService; 
 
         public InsuredPersonsController(IInsuredPersonService insuredPersonService, IPersonInsuranceService personInsuranceService)
         {
@@ -40,23 +40,6 @@ namespace PojistovnaFullAspPrzeczek.Controllers
         /// InsuredPerson create implemnted in registration use case, separate implementation here idled for future use – admin fallback create
         /// </summary>
         /// <returns></returns>
-/*        [Authorize(Roles = "Admin")]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Admin,InsuredPerson")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(InsuredPersonCreateDto insuredPersonCreateDto)
-        {
-            if (!ModelState.IsValid)
-                return View(insuredPersonCreateDto);
-
-            await _insuredPersonService.CreateAsync(insuredPersonCreateDto); 
-            return RedirectToAction(nameof(Index));
-        }*/
 
         // GET: InsuredPersons/Edit/5
         [Authorize(Roles = "Admin,InsuredPerson")]
@@ -92,7 +75,6 @@ namespace PojistovnaFullAspPrzeczek.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                // např. při duplicitním emailu
                 ModelState.AddModelError(nameof(insuredPerson.Email), ex.Message);
                 return View(insuredPerson);
             }
@@ -102,7 +84,6 @@ namespace PojistovnaFullAspPrzeczek.Controllers
             }
             catch (Exception ex)
             {
-                // fallback – můžeš přizpůsobit nebo logovat
                 ModelState.AddModelError(string.Empty, "Nastala neočekávaná chyba: " + ex.Message);
                 return View(insuredPerson);
             }
@@ -142,7 +123,7 @@ namespace PojistovnaFullAspPrzeczek.Controllers
         [Authorize(Roles = "Admin,InsuredPerson")]
         public async Task<IActionResult> ChangeInsurance(int id)
         {
-            var dto = await _personInsuranceService.GetSelectableForInsuredPerson(id); // _insuredPersonService.GetChangeInsuranceAsync(id);
+            var dto = await _personInsuranceService.GetSelectableForInsuredPerson(id); 
             if (dto == null) return NotFound();
 
             return View(dto);
@@ -162,10 +143,8 @@ namespace PojistovnaFullAspPrzeczek.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                // Přidáme chybovou hlášku do ModelState
                 ModelState.AddModelError(string.Empty, ex.Message);
 
-                // Znovu načteme data pro výběr pojištění
                 var dto = await _personInsuranceService.GetSelectableForInsuredPerson(id);
                 return View(dto);
             }

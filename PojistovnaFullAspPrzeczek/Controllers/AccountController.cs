@@ -20,7 +20,7 @@ namespace PojistovnaFullAspPrzeczek.Controllers
 
         private readonly IStringLocalizer _sharedLocalizer =
         _localizerFactory.Create("SharedResources", typeof(Program).Assembly.GetName().Name);
-        // ===== LOGIN z homepage =====
+        // ===== LOGIN homepage =====
 
         [HttpPost]
         [AllowAnonymous]
@@ -32,7 +32,7 @@ namespace PojistovnaFullAspPrzeczek.Controllers
             if (!ModelState.IsValid)
             {
                 Debug.WriteLine("ModelState not valid.");
-                return View("~/Views/Home/Index.cshtml", model); // login je na home stránce
+                return View("~/Views/Home/Index.cshtml", model); 
             }
 
             Debug.WriteLine($"Pokouším se přihlásit jako: {model.Email}");
@@ -53,7 +53,7 @@ namespace PojistovnaFullAspPrzeczek.Controllers
             return View("~/Views/Home/Index.cshtml", model);
         }
 
-        // ===== PŘESMĚROVÁNÍ PO PŘIHLÁŠENÍ =====
+        // ===== REDIRECT AFTER LOGIN =====
         /// <summary>
         /// Redirects user after login based on their role.
         /// </summary>
@@ -78,7 +78,6 @@ namespace PojistovnaFullAspPrzeczek.Controllers
             }
             else if (await _userManager.IsInRoleAsync(user, "InsuredUser"))
             {
-                // Předpoklad: uživatel propojen s insuredPerson podle emailu
                 var insuredPerson = _context.InsuredPerson
                     .FirstOrDefault(p => p.Email == user.Email);    
 
@@ -91,13 +90,13 @@ namespace PojistovnaFullAspPrzeczek.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            else // general nebo žádná role
+            else 
             {
                 return RedirectToAction("Index", "Home");
             }
         }
 
-        // ===== REGISTRACE =====
+        // ===== REGISTRATION =====
 
         [HttpGet]
         public IActionResult Register()
@@ -121,10 +120,8 @@ namespace PojistovnaFullAspPrzeczek.Controllers
 
             if (result.Succeeded)
             {
-                // Přidání role pojištěnce
                 await _userManager.AddToRoleAsync(user, "insuredPerson");
 
-                // Zápis do tabulky pojištěnců
                 var insured = new InsuredPerson
                 {
                     Name = model.Name,
@@ -141,7 +138,6 @@ namespace PojistovnaFullAspPrzeczek.Controllers
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("PostLoginRedirect", "Account");
-                //return RedirectToAction("Index", "Home");
             }
 
             foreach (var error in result.Errors)
@@ -150,7 +146,7 @@ namespace PojistovnaFullAspPrzeczek.Controllers
             return View(model);
         }
 
-        // ===== ODHLÁŠENÍ =====
+        // ===== LOGOUT =====
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -159,7 +155,7 @@ namespace PojistovnaFullAspPrzeczek.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // ===== ZMĚNA JAZYKA =====
+        // ===== LANGUAGE CHANGE =====
         [HttpPost]
         public IActionResult ChangeLanguage(string culture, string returnUrl)
         {

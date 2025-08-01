@@ -35,7 +35,7 @@ namespace PojistovnaFullAspPrzeczek.Services
             if (insured == null) return null;
 
             var insurances = await _context.PersonInsurance
-                .Where(pi => pi.IdInsuredPerson != insuredId) // only insurances not assigned to this insured person
+                .Where(pi => pi.IdInsuredPerson != insuredId) 
                 .Include(pi => pi.Insurance)
                 .ToListAsync();
 
@@ -76,7 +76,6 @@ namespace PojistovnaFullAspPrzeczek.Services
             personInsurance.IdInsuredPerson = insuredId;
             personInsurance.InsuredPerson = insured;
 
-            // securing adding insurance to insured collection for memory conzistence 
             insured.PersonInsurances.Add(personInsurance);
 
             await _context.SaveChangesAsync();
@@ -106,16 +105,14 @@ namespace PojistovnaFullAspPrzeczek.Services
         {
             var entity = _mapper.Map<PersonInsurance>(dto);
 
-            // Explicitně nastav vztah (kvůli pozdějšímu výpisu a navigaci)
             entity.IdInsuredPerson = dto.IdInsuredPerson;
             entity.StartDate = DateTime.SpecifyKind(dto.StartDate, DateTimeKind.Utc);
             entity.EndDate = DateTime.SpecifyKind(dto.EndDate, DateTimeKind.Utc);
 
-            // Můžeš volitelně načíst i pojištěnce a navázat objekt
             var insured = await _context.InsuredPerson.FindAsync(dto.IdInsuredPerson);
             if (insured != null)
             {
-                entity.InsuredPerson = insured; // ⚠️ důležité pro výpis přes Include()
+                entity.InsuredPerson = insured; 
             }
 
             _context.PersonInsurance.Add(entity);

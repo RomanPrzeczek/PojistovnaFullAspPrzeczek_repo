@@ -44,7 +44,7 @@ namespace PojistovnaFullAspPrzeczek.Services
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<InsuredPersonCreateDto> GetCreateTemplateAsync() // zatím nevyužito
+        public Task<InsuredPersonCreateDto> GetCreateTemplateAsync() 
         {
             throw new NotImplementedException();
         }
@@ -75,14 +75,12 @@ namespace PojistovnaFullAspPrzeczek.Services
             _context.InsuredPerson.Remove(entity);
             await _context.SaveChangesAsync();
 
-            // part of code dealing with deletion if user identity acc. email of insuredPerson
             var identityUser = await _userManager.FindByEmailAsync(entity.Email);
             if (identityUser != null)
             {
                 var result = await _userManager.DeleteAsync(identityUser);
                 if (!result.Succeeded)
                 {
-                    // případné logování nebo výjimka podle potřeby
                     throw new Exception("Nepodařilo se smazat identitu pojištěnce.");
                 }
             }
@@ -128,7 +126,7 @@ namespace PojistovnaFullAspPrzeczek.Services
                 }
             }
 
-            _mapper.Map(dto, entity); // přemapuje změny do entity
+            _mapper.Map(dto, entity);
             await _context.SaveChangesAsync();
         }
 

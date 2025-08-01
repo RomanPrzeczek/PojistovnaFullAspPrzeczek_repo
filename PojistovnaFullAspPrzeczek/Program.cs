@@ -12,11 +12,9 @@ using System.Security.Claims;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-// add services for services  ??
-builder.Services.AddScoped<IInsuredPersonService, InsuredPersonService>(); // service for insured
-builder.Services.AddScoped<IPersonInsuranceService, PersonInsuranceService>(); // service for insured insurances
-builder.Services.AddScoped<IInsuranceService, InsuranceService>(); // service for insurances
+builder.Services.AddScoped<IInsuredPersonService, InsuredPersonService>(); 
+builder.Services.AddScoped<IPersonInsuranceService, PersonInsuranceService>(); 
+builder.Services.AddScoped<IInsuranceService, InsuranceService>(); 
 
 // Add AutoMapper for mapping between models and DTOs
 builder.Services.AddAutoMapper(
@@ -26,10 +24,10 @@ builder.Services.AddAutoMapper(
 );
 
 // Add services for dependency injection of repositories
-builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>)); // generic repository
-builder.Services.AddScoped<IInsuredPersonRepository,InsuredPersonRepository>(); // specific InsuredPerson repository
-builder.Services.AddScoped<IInsuranceRepository, InsuranceRepository>(); // specific Insurance repository
-builder.Services.AddScoped<IPersonInsuranceRepository, PersonInsuranceRepository>(); // specific PersonInsurance repository
+builder.Services.AddScoped(typeof(IRepository<>),typeof(GenericRepository<>)); 
+builder.Services.AddScoped<IInsuredPersonRepository,InsuredPersonRepository>(); 
+builder.Services.AddScoped<IInsuranceRepository, InsuranceRepository>(); 
+builder.Services.AddScoped<IPersonInsuranceRepository, PersonInsuranceRepository>(); 
 
 // Configure the database connection string based on the environment
 var connectionString = builder.Configuration.GetConnectionString("PostgreSqlConnection")
@@ -62,7 +60,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>()   // service pro role
+    .AddRoles<IdentityRole>()   
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -76,7 +74,6 @@ var app = builder.Build();
 
 var supportedCultures = new[] { "cs", "en" };
 
-// lokalizace musí být použita před routingem
 var localizationOptions = new RequestLocalizationOptions() { ApplyCurrentCultureToResponseHeaders = true }
     .SetDefaultCulture(supportedCultures[0])
     .AddSupportedCultures(supportedCultures)
@@ -84,16 +81,7 @@ var localizationOptions = new RequestLocalizationOptions() { ApplyCurrentCulture
 
 app.UseRequestLocalization(localizationOptions);
 
-// Pouze v Development prostředí vymaže data, kromně test-admina a -pojištěnce
-/*if (app.Environment.IsDevelopment())
-{
-    using var scope = app.Services.CreateScope();
-    var services = scope.ServiceProvider;
 
-    SeedData.ClearDevData(services);
-    await SeedData.InitializeAsync(services);
-}
-*/
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -102,7 +90,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

@@ -132,10 +132,10 @@ namespace PojistovnaFullAspPrzeczek.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, int IdInsuredPerson)
         {
-            var personInsurance = await personInsuranceService.GetByIdAsync(id); // _context.PersonInsurance.FindAsync(id);
+            var personInsurance = await personInsuranceService.GetByIdAsync(id); 
             if (personInsurance != null)
             {
-                await personInsuranceService.DeleteAsync(personInsurance.IdPersonInsurance); // _context.PersonInsurance.Remove(personInsurance);
+                await personInsuranceService.DeleteAsync(personInsurance.IdPersonInsurance); 
             }
 
             return RedirectToAction("Details", "InsuredPersons", new { id = IdInsuredPerson });
