@@ -130,7 +130,7 @@
     <value>Neplatný formát e-mailu.</value>
   </data>
   <data name="LoginFailed" xml:space="preserve">
-    <value>Přihlášení se nezdařilo. Zkontrolujte e-mail a heslo.</value>
+    <value>Přihlášení se nezdařilo. Zkontrolujte e-mail a heslo nebo se registrujte.</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Jméno</value>

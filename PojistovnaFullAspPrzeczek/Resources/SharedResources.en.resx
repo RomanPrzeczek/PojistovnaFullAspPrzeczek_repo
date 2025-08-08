@@ -130,7 +130,7 @@
     <value>Invalid email format.</value>
   </data>
   <data name="LoginFailed" xml:space="preserve">
-    <value>Login failed. Check your email and password.</value>
+    <value>Login failed. Check your email and password or register.</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>

@@ -63,6 +63,15 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()   
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true; // XSS protection
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // HTTPS required
+    options.Cookie.SameSite = SameSiteMode.Strict; // CSRF protection
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
+
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 builder.Services
@@ -80,7 +89,6 @@ var localizationOptions = new RequestLocalizationOptions() { ApplyCurrentCulture
     .AddSupportedUICultures(supportedCultures);
 
 app.UseRequestLocalization(localizationOptions);
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
