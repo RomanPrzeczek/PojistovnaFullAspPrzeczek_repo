@@ -20,3 +20,15 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Schování nativní ikonky oka pro zobrazení hesla prohlížeèi */
+/* Edge/IE */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+/* Nìkteré Chromium buildy */
+input[type="password"]::-webkit-credentials-auto-fill-button {
+    visibility: hidden; /* nebo display:none; */
+}

@@ -40,7 +40,13 @@
                     <label asp-for="Password" class="form-label">@Html.Raw(Localizer["HomeIndex_Password"].Value)</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                        <input asp-for="Password" type="password" class="form-control" />
+                        <input asp-for="Password"
+                               type="password"
+                               class="form-control"
+                               id="passwordInput" />
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">
+                            <i class="bi bi-eye" id="toggleIcon"></i>
+                        </button>
                     </div>
                     <small class="form-text text-muted">@Html.Raw(Localizer["HomeIndex_PasswordCondition"].Value)</small>
                     <span asp-validation-for="Password" class="text-danger" />
