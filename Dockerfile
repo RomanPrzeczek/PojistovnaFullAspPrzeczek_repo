@@ -15,11 +15,9 @@ RUN dotnet publish PojistovnaFullAspPrzeczek/PojistovnaFullAspPrzeczek.csproj \
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
-# Railway-friendly port binding
-ENV DOTNET_RUNNING_IN_CONTAINER=true
-ENV DOTNET_USE_POLLING_FILE_WATCHER=true
-# bnd na dynamický PORT od Railway
-ENV ASPNETCORE_URLS=http://+:${PORT}
+# poslouchej uvnitø kontejneru na 8080 (Railway si to namapuje)
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://0.0.0.0:8080
 
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "PojistovnaFullAspPrzeczek.dll"]
