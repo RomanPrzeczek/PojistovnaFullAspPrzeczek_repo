@@ -100,8 +100,8 @@
                         }
                         <form asp-controller="Home" asp-action="ChangeLanguage" method="post" class="d-inline">
                             <select name="culture" onchange="this.form.submit()" class="form-select form-select-sm w-auto d-inline">
-                                <option value="cs" selected="@((CultureInfo.CurrentUICulture.Name == "cs") ? "selected" : null)">@Html.Raw(Localizer["Layout_Lang_Cz"].Value)</option>
-                                <option value="en" selected="@((CultureInfo.CurrentUICulture.Name == "en") ? "selected" : null)">@Html.Raw(Localizer["Layout_Lang_En"].Value)</option>
+                                <option value="cs" selected="@((CultureInfo.CurrentUICulture.Name == "cs") ? "selected" : null)">CZ</option>
+                                <option value="en" selected="@((CultureInfo.CurrentUICulture.Name == "en") ? "selected" : null)">ENG</option>
                             </select>
                             <input type="hidden" name="returnUrl" value="@safeReturnUrl" />
                         </form>

@@ -129,12 +129,6 @@
   <data name="Layout_InsuredOverview" xml:space="preserve">
     <value>Insured overview</value>
   </data>
-  <data name="Layout_Lang_Cz" xml:space="preserve">
-    <value>Czech</value>
-  </data>
-  <data name="Layout_Lang_En" xml:space="preserve">
-    <value>English</value>
-  </data>
   <data name="Layout_Logout" xml:space="preserve">
     <value>Logout</value>
   </data>

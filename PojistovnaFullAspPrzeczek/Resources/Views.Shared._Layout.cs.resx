@@ -129,12 +129,6 @@
   <data name="Layout_InsuredOverview" xml:space="preserve">
     <value>Přehled pojištěnců</value>
   </data>
-  <data name="Layout_Lang_Cz" xml:space="preserve">
-    <value>Čeština</value>
-  </data>
-  <data name="Layout_Lang_En" xml:space="preserve">
-    <value>Angličtina</value>
-  </data>
   <data name="Layout_Logout" xml:space="preserve">
     <value>Odhlásit se</value>
   </data>
