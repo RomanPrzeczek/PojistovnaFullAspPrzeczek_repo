@@ -1,0 +1,26 @@
+# build artefakty
+**/bin/
+**/obj/
+
+# IDE & temp
+.vs/
+.idea/
+*.user
+*.suo
+*.swp
+
+# lokální databáze a archivy
+*.db
+*.db-shm
+*.db-wal
+*.zip
+AppDocu/
+
+# test projekty
+**/Tests*/
+**/*.Tests.*/
+PojistovnaFullAspPrzeczek.Tests.*
+
+# git & CI
+.git/
+.github/

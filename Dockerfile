@@ -1,19 +1,22 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 80
-
+# === Build stage ===
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["PojistovnaFullAspPrzeczek/PojistovnaFullAspPrzeczek.csproj", "PojistovnaFullAspPrzeczek/"]
-RUN dotnet restore "PojistovnaFullAspPrzeczek/PojistovnaFullAspPrzeczek.csproj"
-COPY . .
-WORKDIR "/src/PojistovnaFullAspPrzeczek"
-RUN dotnet build "PojistovnaFullAspPrzeczek.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "PojistovnaFullAspPrzeczek.csproj" -c Release -o /app/publish
+# 1) jen csproj kvùli cache restore
+COPY PojistovnaFullAspPrzeczek/PojistovnaFullAspPrzeczek.csproj PojistovnaFullAspPrzeczek/
+RUN dotnet restore PojistovnaFullAspPrzeczek/PojistovnaFullAspPrzeczek.csproj
 
-FROM base AS final
+# 2) jen zdrojáky web projektu (ne celé repo)
+COPY PojistovnaFullAspPrzeczek/ PojistovnaFullAspPrzeczek/
+RUN dotnet publish PojistovnaFullAspPrzeczek/PojistovnaFullAspPrzeczek.csproj \
+    -c Release -o /app/publish /p:UseAppHost=false
+
+# === Runtime stage ===
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+# Railway friendly listening
+ENV ASPNETCORE_URLS=http://0.0.0.0:${PORT}
+
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "PojistovnaFullAspPrzeczek.dll"]
